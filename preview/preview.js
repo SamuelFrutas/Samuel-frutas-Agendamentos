@@ -528,14 +528,13 @@ function sendOrder() {
   message += "🚚 *Tipo:* " + orderType + "\n";
 
   if (orderType === "Entrega") {
-    message += "📍 *Endereço:* " + address + "\n";
     if (details.length) message += "🏢 " + details.join(" | ") + "\n";
   }
 
   const general = $("general").value.trim();
   if (general) message += "📝 *Observação geral:* " + general + "\n";
 
-  window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message), "_blank");
+  window.location.href = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
 }
 
 function openFloatingSearch() {
