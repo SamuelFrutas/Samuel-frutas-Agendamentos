@@ -1,0 +1,39 @@
+name: Corrigir somente Finalizar pedido WhatsApp
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Corrigir somente o botão Finalizar pedido
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('preview/preview.js')
+          s = p.read_text(encoding='utf-8')
+          old = '    message += "📍 *Endereço:* " + address + "\\n";\n'
+          new = ''
+          if old not in s:
+              raise SystemExit('Linha do endereço inesperada; nenhuma alteração feita.')
+          s = s.replace(old, new, 1)
+          old2 = '  window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message), "_blank");\n'
+          new2 = '  window.location.href = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);\n'
+          if old2 not in s:
+              raise SystemExit('Linha do WhatsApp inesperada; nenhuma alteração feita.')
+          s = s.replace(old2, new2, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+          git diff --check
+          git diff -- preview/preview.js
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/preview.js
+          git commit -m "Corrigir botão Finalizar pedido no WhatsApp"
+          git push
