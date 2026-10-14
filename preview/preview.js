@@ -537,6 +537,8 @@ function sendOrder() {
   window.location.href = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
 }
 
+window.sendOrder = sendOrder;
+
 function openFloatingSearch() {
   currentCategory = "";
   renderCategories();
