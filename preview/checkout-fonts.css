@@ -1,0 +1,16 @@
+/* CHECKOUT — textos maiores e mais fáceis de ler */
+.checkout-head{font-size:28px !important}
+.checkout-head h3{font-size:20px !important;line-height:1.15 !important}
+.checkout-head p{font-size:13px !important;line-height:1.3 !important}
+.choice b{font-size:16px !important;line-height:1.2 !important}
+.choice small{font-size:12px !important;line-height:1.25 !important}
+.checkout>label{font-size:13px !important;line-height:1.25 !important}
+.address-delivery-title{font-size:20px !important;line-height:1.2 !important}
+.checkout textarea{font-size:15px !important}
+@media(max-width:380px){
+  .checkout-head h3{font-size:19px !important}
+  .choice b{font-size:15px !important}
+  .choice small{font-size:11px !important}
+  .checkout>label{font-size:12px !important}
+  .address-delivery-title{font-size:19px !important}
+}

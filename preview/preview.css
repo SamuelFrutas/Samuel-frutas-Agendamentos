@@ -1,0 +1,836 @@
+:root{
+  --green:#08733d;--green2:#0d8a4a;--dark:#07542d;--mint:#e7f7ee;
+  --bg:#f7faf8;--ink:#18241e;--muted:#718078;--line:#e1e9e4;--red:#df3838;
+  --shadow:0 7px 25px rgba(12,69,38,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:82px;overflow-x:hidden}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.top{position:sticky;top:0;z-index:20;height:68px;display:flex;align-items:center;justify-content:space-between;padding:8px max(16px,calc((100% - 960px)/2));background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px;border:0;background:transparent;text-align:left;color:var(--ink);padding:0}
+.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:var(--green);color:#fff;font-size:22px}
+.brand b{display:block;font-size:16px;line-height:1.1}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.bag{position:relative;border:0;background:#fff;width:43px;height:43px;border-radius:14px;box-shadow:var(--shadow);color:var(--green);font-size:20px}
+.bag i{position:absolute;right:-3px;top:-5px;display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--red);color:#fff;font-size:9px;font-style:normal;font-weight:900}
+main{width:min(100%,960px);margin:auto;padding:15px 15px 30px}.view{display:none}.view.on{display:block}
+.hero{min-height:190px;display:flex;align-items:center;justify-content:space-between;overflow:hidden;position:relative;padding:25px;border-radius:28px;background:linear-gradient(135deg,#075a30,#159553);color:#fff;box-shadow:0 16px 34px rgba(7,115,61,.18);margin-bottom:15px}
+.hero:after{content:"";position:absolute;width:190px;height:190px;right:-70px;top:-50px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero>div:first-child{position:relative;z-index:1}.hero span{font-size:9px;letter-spacing:1.5px;font-weight:900;opacity:.75}.hero h1{margin:8px 0;font-size:clamp(25px,7vw,40px);line-height:1.04;letter-spacing:-1px}.hero p{max-width:460px;margin:0;font-size:12px;line-height:1.5;opacity:.88}.hero-orb{position:relative;z-index:1;font-size:76px;filter:drop-shadow(0 12px 15px rgba(0,0,0,.18));transform:rotate(-10deg)}
+.search{height:52px;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:0 15px;color:var(--muted);font-size:23px;box-shadow:var(--shadow);margin-bottom:14px}.search input{width:100%;border:0;outline:0;background:transparent;font-size:13px}
+.load-status{font-size:10px;color:var(--muted);margin:-4px 2px 10px}.load-status.ok{color:var(--green)}.load-status.error{color:var(--red)}
+.cats{display:flex;gap:9px;overflow-x:auto;padding:2px 1px 9px;margin-bottom:11px;scrollbar-width:none}.cats::-webkit-scrollbar{display:none}
+.cat{flex:0 0 auto;min-width:83px;border:1px solid var(--line);background:#fff;border-radius:17px;padding:10px 9px;text-align:center;box-shadow:var(--shadow);color:var(--ink)}.cat.active{background:var(--green);border-color:var(--green);color:#fff}.cat span{display:grid;place-items:center;width:43px;height:43px;margin:auto;border-radius:50%;background:var(--mint);font-size:22px}.cat.active span{background:rgba(255,255,255,.16)}.cat b{display:block;font-size:10px;margin-top:6px}.cat small{display:block;font-size:8px;opacity:.65;margin-top:2px}
+.block{margin:10px 0 24px}.blockhead{display:flex;align-items:end;justify-content:space-between;margin-bottom:10px}.blockhead h2{margin:0;font-size:19px}.see-all{border:0;background:transparent;color:var(--green);font-size:10px;font-weight:900}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.product{min-width:0;background:#fff;border:1px solid var(--line);border-radius:20px;padding:10px;box-shadow:var(--shadow);overflow:hidden}
+.photo{height:126px;border-radius:15px;background:linear-gradient(145deg,#effaf3,#dff2e7);display:grid;place-items:center;overflow:hidden;position:relative;margin-bottom:10px}.photo img{width:100%;height:100%;object-fit:cover}.fallback-fruit{font-size:48px}.heart{position:absolute;right:8px;top:8px;width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.9);color:#60756a;font-size:18px}
+.product h3{font-size:13px;line-height:1.25;margin:0 0 3px;overflow-wrap:anywhere}.product p{font-size:9px;color:var(--muted);margin:0 0 8px}
+.units{display:flex;gap:5px;overflow-x:auto;margin-bottom:8px;scrollbar-width:none}.units::-webkit-scrollbar{display:none}.unit{flex:0 0 auto;white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px 8px;color:var(--muted);font-size:9px;font-weight:900}.unit.active{background:var(--mint);border-color:#9dd4b5;color:var(--green)}
+.quantity-control{display:flex;align-items:center;width:100%;height:50px;min-width:0;gap:5px;background:#f0f5f2;border:1px solid #dce8e1;border-radius:13px;padding:5px}
+.quantity-btn{appearance:none;-webkit-appearance:none;flex:0 0 36px;width:36px;height:38px;min-width:36px;min-height:38px;display:flex;align-items:center;justify-content:center;margin:0;padding:0;border:1px solid #d4e2da;border-radius:9px;background:#fff;color:var(--green);font-size:23px;font-weight:900;line-height:1;visibility:visible;opacity:1}
+.quantity-plus{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 9px rgba(8,115,61,.2)}
+.quantity-input{flex:1 1 auto;width:1px;min-width:0;height:38px;border:0;outline:0;background:transparent;color:var(--ink);text-align:center;font-size:13px;font-weight:900;padding:0 2px}
+.quantity-btn:active{transform:scale(.94)}
+.empty{text-align:center;padding:30px 15px;background:#fff;border:1px solid var(--line);border-radius:18px;color:var(--muted);font-size:12px;line-height:1.6}.empty strong{color:var(--ink)}.retry{margin-top:10px;border:0;border-radius:10px;background:var(--green);color:#fff;padding:10px 15px;font-weight:800}
+.head{display:flex;align-items:center;gap:12px;margin:9px 0 16px}.head>button{width:39px;height:39px;border:1px solid var(--line);background:#fff;border-radius:12px;color:var(--green);font-size:19px}.head small{font-size:9px;font-weight:900;letter-spacing:1.3px;color:var(--muted)}.head h2{font-size:25px;margin:2px 0}
+.item{background:#fff;border:1px solid var(--line);border-radius:19px;padding:14px;margin-bottom:9px;box-shadow:var(--shadow)}.itemrow{display:flex;gap:9px}.iteminfo{flex:1;min-width:0}.itemtitle{display:flex;justify-content:space-between;gap:9px}.itemtitle b{font-size:13px;overflow-wrap:anywhere}.itemqty{color:var(--green);font-size:12px;font-weight:900;white-space:nowrap;cursor:pointer}.sub{font-size:9px;color:var(--muted);margin-top:3px}.obsbtn{border:0;background:transparent;color:var(--green);font-size:10px;font-weight:900;padding:8px 0 2px}.obs{display:none}.obs.show{display:block}.obs textarea,.checkout textarea,.checkout input,.modalbox select{width:100%;border:1px solid var(--line);border-radius:12px;background:#f9fbfa;padding:10px;outline:0;color:var(--ink);margin-top:5px}.obs textarea{min-height:70px;resize:vertical}.saveobs{border:0;background:var(--green);color:#fff;border-radius:9px;padding:7px 10px;font-size:10px;font-weight:900;margin-top:5px}.remove{flex:0 0 32px;width:32px;height:32px;border:0;border-radius:10px;background:#fff0f0;color:var(--red);font-size:18px}
+.checkout{background:#fff;border:1px solid var(--line);border-radius:22px;padding:17px;box-shadow:var(--shadow)}.checkout-head{display:flex;gap:9px;align-items:center;font-size:23px}.checkout h3{font-size:15px;margin:0}.checkout p{font-size:10px;color:var(--muted);margin:2px 0 0}.choices{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px 0}.choice{border:1px solid var(--line);background:#fff;border-radius:15px;padding:13px 10px;text-align:center}.choice.active{background:var(--mint);border:2px solid var(--green)}.choice b,.choice small{display:block}.choice b{font-size:11px}.choice small{font-size:9px;color:var(--muted);margin-top:3px}label{display:block;color:var(--muted);font-size:10px;font-weight:900;margin:11px 0}label input,label textarea{margin-top:5px}.checkout textarea{min-height:76px;resize:vertical}.address-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.address-mini input{margin:0}.send{width:100%;min-height:52px;border:0;border-radius:14px;background:var(--green);color:#fff;font-size:13px;font-weight:900;box-shadow:0 10px 24px rgba(8,115,61,.18)}
+.bottom{position:fixed;bottom:0;left:0;right:0;height:68px;z-index:25;display:flex;justify-content:center;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(20,50,30,.05)}.bottom button{position:relative;flex:1;max-width:130px;border:0;background:transparent;color:#6c7b73;font-size:22px}.bottom button:first-child{color:var(--green)}.bottom span{display:block;font-size:9px;font-weight:800;margin-top:1px}.bottom em{position:absolute;top:5px;margin-left:2px;background:var(--red);color:#fff;border-radius:8px;padding:1px 4px;font-size:7px;font-style:normal}
+.modal{display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:17px}.modal.show{display:flex}.shade{position:absolute;inset:0;background:rgba(6,28,16,.5)}.modalbox{position:relative;width:min(100%,390px);background:#fff;border-radius:22px;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.18)}.modalbox>#close{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:50%;background:#f1f5f2;font-size:20px}.modalbox small{font-size:9px;color:var(--muted);font-weight:900;letter-spacing:1.1px}.modalbox h3{margin:5px 0 12px}.mqty{display:flex;align-items:center;gap:7px;background:#f3f7f4;padding:7px;border-radius:13px;margin:10px 0 13px}.mqty button{flex:0 0 45px;width:45px;height:42px;border:0;background:#fff;border-radius:9px;color:var(--green);font-size:22px}.mqty input{flex:1;min-width:0;height:42px;text-align:center;border:0;border-radius:9px;outline:0}
+#toast{position:fixed;left:50%;bottom:82px;z-index:60;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#173022;color:#fff;padding:10px 14px;border-radius:11px;font-size:11px;transition:.2s}#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:380px){main{padding-left:10px;padding-right:10px}.grid{gap:7px}.product{padding:8px;border-radius:17px}.photo{height:112px}.quantity-control{height:47px;gap:4px;padding:4px}.quantity-btn{flex-basis:34px;width:34px;min-width:34px;height:37px;min-height:37px;font-size:22px}.quantity-input{height:37px;font-size:12px}.hero{padding:20px;border-radius:23px}.hero-orb{font-size:58px}.hero h1{font-size:25px}}
+@media(min-width:700px){main{padding-top:24px}.hero{min-height:220px;padding:34px}.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.product{padding:12px}.photo{height:165px}.quantity-control{height:52px;gap:5px}.quantity-btn{flex-basis:42px;width:42px;min-width:42px;height:40px;min-height:40px}.quantity-input{height:40px}.bottom{display:none}}
+
+/* Informativo de alteração de quantidade */
+.edit-hint{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  max-width:100%;
+  margin-top:6px;
+  padding:5px 8px;
+  border-radius:7px;
+  background:#fff0f0;
+  color:#c62828;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.15px;
+  line-height:1.2;
+}
+.address-mini input{
+  min-width:0;
+}
+
+/* Navegação rápida da prévia */
+.itemtitle b{font-size:15px;line-height:1.25}
+.floating-checkout{
+  position:fixed;right:16px;bottom:84px;z-index:24;
+  display:flex;align-items:center;gap:10px;
+  min-height:54px;padding:8px 12px 8px 9px;
+  border:0;border-radius:17px;background:var(--green);color:#fff;
+  box-shadow:0 10px 28px rgba(8,115,61,.28);
+}
+.floating-checkout:active{transform:scale(.97)}
+.floating-cart{position:relative;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.16);font-size:19px}
+.floating-cart i{position:absolute;right:-4px;top:-5px;display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--red);color:#fff;font-size:8px;font-style:normal;font-weight:900}
+.floating-checkout span:nth-child(2){display:flex;flex-direction:column;text-align:left;line-height:1.1}
+.floating-checkout b{font-size:11px}.floating-checkout small{font-size:8px;opacity:.8;margin-top:3px}.floating-checkout>strong{font-size:19px;margin-left:2px}
+.category-sheet{display:none;position:fixed;inset:0;z-index:70}
+.category-sheet.show{display:block}
+.category-shade{position:absolute;inset:0;background:rgba(6,28,16,.42)}
+.category-panel{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,520px);padding:17px 15px calc(20px + env(safe-area-inset-bottom));background:#fff;border-radius:24px 24px 0 0;box-shadow:0 -15px 45px rgba(0,0,0,.16)}
+.category-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.category-panel-head small{font-size:9px;letter-spacing:1.2px;color:var(--muted);font-weight:900}
+.category-panel-head h3{margin:3px 0 0;font-size:19px}
+.category-panel-head button{width:34px;height:34px;border:0;border-radius:50%;background:#f1f5f2;color:var(--green);font-size:22px}
+.category-panel-list{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.category-option{display:flex;align-items:center;gap:10px;text-align:left;padding:12px;border:1px solid var(--line);border-radius:15px;background:#fff;color:var(--ink)}
+.category-option.active{border-color:var(--green);background:var(--mint)}
+.category-option span{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:12px;background:#f0f7f3;font-size:22px}
+.category-option b{font-size:11px;line-height:1.2}.category-option small{display:block;color:var(--muted);font-size:8px;margin-top:3px}
+@media(max-width:380px){.floating-checkout{right:10px;bottom:78px}.floating-checkout b{font-size:10px}.floating-checkout small{font-size:7px}}
+@media(min-width:700px){.floating-checkout{right:max(20px,calc((100% - 960px)/2));bottom:24px}.category-panel{bottom:20px;border-radius:24px}.category-shade{background:rgba(6,28,16,.32)}}
+
+.quantity-btn:disabled{opacity:.38;cursor:not-allowed;background:#eef2ef;color:#9aa8a0;box-shadow:none}.quantity-input.quantity-locked{color:#9aa8a0;cursor:not-allowed;background:#eef2ef}
+
+.unit-hint{display:flex;align-items:center;justify-content:center;width:100%;margin:0 0 8px;padding:8px 6px;border-radius:10px;background:#fff0f0;border:2px solid #df3838;color:#c62828;font-size:11px;line-height:1.15;font-weight:950;letter-spacing:.3px;text-align:center;text-transform:uppercase}
+
+/* Categorias: quatro quadrados iguais na mesma linha */
+.cats{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:8px !important;
+  width:100% !important;
+  overflow:visible !important;
+  padding:2px 0 14px !important;
+  margin:0 0 14px !important;
+}
+#cats .cat{
+  position:relative !important;
+  width:100% !important;
+  min-width:0 !important;
+  aspect-ratio:1 / 1 !important;
+  height:auto !important;
+  padding:7px 3px !important;
+  border-radius:13px !important;
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  background-image:url("./assets/categorias-aprovadas.jpg") !important;
+  background-repeat:no-repeat !important;
+  background-size:auto 200% !important;
+  color:#fff !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.95);
+  box-shadow:0 5px 14px rgba(12,69,38,.14) !important;
+  border:1px solid rgba(255,255,255,.7) !important;
+}
+#cats .cat::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.76) 100%);
+  pointer-events:none;
+}
+#cats .cat>*{position:relative;z-index:1}
+#cats .cat span{display:none !important}
+#cats .cat b{
+  font-size:9px !important;
+  line-height:1.05 !important;
+  text-align:center !important;
+  margin:0 !important;
+  width:100% !important;
+}
+#cats .cat small{
+  font-size:6px !important;
+  line-height:1 !important;
+  margin-top:2px !important;
+}
+#cats .cat:nth-child(1){background-image:url('./assets/categoria-frutas.jpg') !important;background-size:cover !important;background-position:center !important}
+#cats .cat:nth-child(2){background-image:url('./assets/categoria-legumes.jpg') !important;background-size:cover !important;background-position:center !important;background-repeat:no-repeat !important}
+#cats .cat:nth-child(3){background-position:0% 100% !important}
+#cats .cat:nth-child(4){background-position:100% 100% !important}
+#cats .cat.active{border:2px solid #fff !important}
+#category-panel-list .category-option{
+  background-image:url("./assets/categorias-aprovadas.jpg") !important;
+  background-size:auto 200% !important;
+  background-repeat:no-repeat !important;
+  position:relative !important;
+  overflow:hidden !important;
+  color:#fff !important;
+}
+#category-panel-list .category-option::before{
+  content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(0,0,0,.78));
+}
+#category-panel-list .category-option>*{position:relative;z-index:1}
+#category-panel-list .category-option span{display:none !important}
+#category-panel-list .category-option:nth-child(1){background-image:url('./assets/categoria-frutas.jpg') !important;background-size:cover !important;background-position:center !important}
+#category-panel-list .category-option:nth-child(2){background-image:none !important}
+#category-panel-list .category-option:nth-child(3){background-position:0% 100% !important}
+#category-panel-list .category-option:nth-child(4){background-position:100% 100% !important}
+@media(min-width:700px){
+  .cats{gap:12px !important}
+  #cats .cat b{font-size:12px !important}
+  #cats .cat small{font-size:8px !important}
+}
+
+/* Refinamento visual do painel Categorias */
+.category-sheet.show .category-panel{
+  padding:20px 16px calc(22px + env(safe-area-inset-bottom)) !important;
+  border-radius:26px 26px 0 0 !important;
+  background:#fff !important;
+  box-shadow:0 -18px 55px rgba(0,0,0,.20) !important;
+}
+.category-panel-head{
+  margin-bottom:16px !important;
+  padding:0 2px !important;
+}
+.category-panel-head small{
+  font-size:9px !important;
+  letter-spacing:1.4px !important;
+  color:#6d7b74 !important;
+}
+.category-panel-head h3{
+  font-size:21px !important;
+  margin-top:4px !important;
+  letter-spacing:-.3px;
+}
+.category-panel-head button{
+  width:38px !important;
+  height:38px !important;
+  background:#edf5f0 !important;
+  font-size:23px !important;
+}
+.category-panel-list{
+  grid-template-columns:1fr 1fr !important;
+  gap:11px !important;
+}
+#category-panel-list .category-option{
+  min-height:112px !important;
+  height:112px !important;
+  padding:12px !important;
+  border:2px solid rgba(255,255,255,.9) !important;
+  border-radius:18px !important;
+  display:flex !important;
+  align-items:flex-end !important;
+  justify-content:flex-start !important;
+  background-size:auto 200% !important;
+  box-shadow:0 5px 16px rgba(16,54,34,.12) !important;
+}
+#category-panel-list .category-option::before{
+  background:linear-gradient(180deg,rgba(0,0,0,.02) 20%,rgba(0,0,0,.82) 100%) !important;
+}
+#category-panel-list .category-option b{
+  font-size:13px !important;
+  font-weight:900 !important;
+  line-height:1.08 !important;
+  text-shadow:0 1px 4px rgba(0,0,0,.8);
+}
+#category-panel-list .category-option small{
+  font-size:8px !important;
+  color:rgba(255,255,255,.88) !important;
+  text-shadow:0 1px 3px rgba(0,0,0,.8);
+}
+#category-panel-list .category-option.active{
+  border:3px solid #fff !important;
+  box-shadow:0 0 0 2px #168447,0 7px 18px rgba(16,54,34,.18) !important;
+}
+.category-shade{
+  background:rgba(5,25,15,.50) !important;
+  backdrop-filter:blur(2px);
+}
+@media(max-width:380px){
+  .category-sheet.show .category-panel{padding-left:12px !important;padding-right:12px !important}
+  #category-panel-list .category-option{height:102px !important;min-height:102px !important;border-radius:16px !important}
+  #category-panel-list .category-option b{font-size:12px !important}
+}
+
+/* Nomes das categorias mais visíveis no painel */
+#category-panel-list .category-option b{
+  font-size:16px !important;
+  line-height:1.12 !important;
+  font-weight:950 !important;
+  letter-spacing:-.15px !important;
+  color:#fff !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.95) !important;
+}
+#category-panel-list .category-option small{
+  font-size:9px !important;
+  line-height:1.05 !important;
+  margin-top:4px !important;
+  color:rgba(255,255,255,.95) !important;
+}
+@media(max-width:380px){
+  #category-panel-list .category-option b{
+    font-size:14px !important;
+  }
+  #category-panel-list .category-option small{
+    font-size:8px !important;
+  }
+}
+
+/* Nomes maiores nas quatro categorias da tela principal */
+#cats .cat b{
+  font-size:13px !important;
+  line-height:1.08 !important;
+  font-weight:950 !important;
+  letter-spacing:-.1px !important;
+  color:#fff !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.98) !important;
+}
+#cats .cat small{
+  font-size:8px !important;
+  line-height:1 !important;
+  font-weight:800 !important;
+  margin-top:3px !important;
+}
+@media(max-width:380px){
+  #cats .cat b{font-size:12px !important}
+  #cats .cat small{font-size:7px !important}
+}
+
+/* Imagens nítidas e individuais nas 4 categorias principais */
+#cats .cat{
+  background-image:none !important;
+  background-color:#173b27 !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#cats .cat:nth-child(1){
+  background-image:url("https://images.unsplash.com/photo-1452574021207-3cab7c474f89?auto=format&fit=crop&w=900&q=88") !important;
+}
+#cats .cat:nth-child(2){
+  background-image:url("https://images.unsplash.com/photo-1643287749988-8a9cf3c9e221?auto=format&fit=crop&w=900&q=88") !important;
+}
+#cats .cat:nth-child(3){
+  background-image:url("https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=900&q=88") !important;
+}
+#cats .cat:nth-child(4){
+  background-image:
+    url("https://images.unsplash.com/photo-1672670440003-4ecd51f62327?auto=format&fit=crop&w=900&q=88"),
+    url("https://images.unsplash.com/photo-1546662608-aec5228e9a74?auto=format&fit=crop&w=900&q=88") !important;
+  background-size:50% 100%,50% 100% !important;
+  background-position:left center,right center !important;
+  background-repeat:no-repeat !important;
+}
+/* Painel inferior: emojis, sem imagens */
+#category-panel-list .category-option{
+  background-image:none !important;
+  background-color:#fff !important;
+  color:var(--ink) !important;
+  text-shadow:none !important;
+  background-size:auto !important;
+}
+#category-panel-list .category-option::before{display:none !important}
+#category-panel-list .category-option span{
+  display:grid !important;
+  position:relative !important;
+  z-index:1 !important;
+  flex:0 0 48px !important;
+  width:48px !important;
+  height:48px !important;
+  border-radius:14px !important;
+  background:#f0f7f3 !important;
+  color:initial !important;
+  font-size:26px !important;
+  text-shadow:none !important;
+}
+#category-panel-list .category-option b{
+  color:var(--ink) !important;
+  text-shadow:none !important;
+}
+#category-panel-list .category-option small{
+  color:var(--muted) !important;
+  text-shadow:none !important;
+}
+#category-panel-list .category-option.active{
+  background:var(--mint) !important;
+  border:2px solid var(--green) !important;
+  box-shadow:0 6px 18px rgba(16,54,34,.12) !important;
+}
+
+/* Fotos finais das quatro categorias principais — sem texto dentro da imagem */
+#cats .cat{
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:cover !important;
+}
+#cats .cat:nth-child(1){
+  background-image:url("https://img.pikbest.com/photo/20250911/assortment-of-fresh-tropical-fruits-on-wooden-table_11881218.jpg%21sw800") !important;
+}
+#cats .cat:nth-child(2){
+  background-image:url("https://www.amelierestaurantparis.com/images/recettes-faibles-en-fodmap-pour-une-digestion-facile.jpg") !important;
+}
+#cats .cat:nth-child(3){
+  background-image:url("https://media.una.rs/images/2024/01/zeleno%20povr%C4%87e%2C%20lisnato%20povr%C4%87e%20-%20shutterstock-65b3e1b27ed68.webp") !important;
+}
+#cats .cat:nth-child(4){
+  background-image:
+    url("https://assets.telegraphindia.com/abp/2024/Nov/1731066747_new-project-2024-11-08t172153-281.jpg"),
+    url("https://www.unsfarms.com/cdn/shop/collections/create-a-category-icon-for-organic-produce-natural-looking-no-baskets-branding-use-eggs-honey-with-props.png?v=1769668846") !important;
+  background-size:50% 100%,50% 100% !important;
+  background-position:left center,right center !important;
+  background-repeat:no-repeat !important;
+}
+
+/* Fotos aprovadas — recorte exato das fotos, sem usar as faixas de texto da arte */
+#cats .cat,
+#category-panel-list .category-option{
+  background-image:url("./assets/categorias-aprovadas.jpg") !important;
+  background-repeat:no-repeat !important;
+}
+/* Os cards principais são quadrados. O recorte abaixo transforma cada foto da arte 2x2 em uma imagem inteira. */
+#cats .cat{
+  background-size:212% 302% !important;
+}
+#cats .cat:nth-child(1){background-position:3.3% 2.6% !important}
+#cats .cat:nth-child(2){background-position:96.1% 2.6% !important}
+#cats .cat:nth-child(3){background-position:3.3% 71.4% !important}
+#cats .cat:nth-child(4){background-position:96.1% 71.4% !important}
+/* No painel, usa a mesma foto aprovada, sem mostrar o texto embutido da montagem. */
+#category-panel-list .category-option{
+  background-size:212% 302% !important;
+}
+#category-panel-list .category-option:nth-child(1){background-position:3.3% 2.6% !important}
+#category-panel-list .category-option:nth-child(2){background-position:96.1% 2.6% !important}
+#category-panel-list .category-option:nth-child(3){background-position:3.3% 71.4% !important}
+#category-panel-list .category-option:nth-child(4){background-position:96.1% 71.4% !important}
+
+
+/* REGRA FINAL: o painel inferior "Categorias" usa somente emojis. As fotos ficam apenas nos 4 cards da tela principal. */
+#category-panel-list .category-option{
+  background-image:none !important;
+  background-color:#fff !important;
+  background-size:auto !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  color:var(--ink) !important;
+  text-shadow:none !important;
+}
+#category-panel-list .category-option::before{display:none !important}
+#category-panel-list .category-option span{
+  display:grid !important;
+  position:relative !important;
+  z-index:1 !important;
+  flex:0 0 48px !important;
+  width:48px !important;
+  height:48px !important;
+  border-radius:14px !important;
+  background:#f0f7f3 !important;
+  color:initial !important;
+  font-size:26px !important;
+  text-shadow:none !important;
+}
+#category-panel-list .category-option b{color:var(--ink) !important;text-shadow:none !important}
+#category-panel-list .category-option small{color:var(--muted) !important;text-shadow:none !important}
+#category-panel-list .category-option.active{background:var(--mint) !important;border:2px solid var(--green) !important}
+
+
+/* POSIÇÃO FINAL CONFIRMADA: foto de Frutas somente no card principal da faixa das 4 categorias */
+#cats .cat:nth-child(1){
+  background-image:url("./assets/categoria-frutas.jpg") !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+/* O painel aberto pelo botão Categorias continua somente com emojis. */
+#category-panel-list .category-option{background-image:none !important;background-color:#fff !important}
+
+
+/* CORREÇÃO DEFINITIVA — card principal de Legumes */
+#cats .cat:nth-child(2){
+  background-image:url("https://samuelfrutas.github.io/samuel-frutas/preview/assets/categoria-legumes.jpg?v=48") !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(2){background-image:none !important}
+
+
+/* === REGRA ÚNICA FINAL — LEGUMES APROVADO === */
+#cats .cat:nth-child(2),
+#category-panel-list .category-option:nth-child(2){
+  background-image:url("data:image/jpeg;base64,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") !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  background-color:#173b27 !important;
+}
+#category-panel-list .category-option:nth-child(2){
+  min-height:112px !important;
+  height:112px !important;
+  display:flex !important;
+  align-items:flex-end !important;
+  justify-content:flex-start !important;
+  padding:12px !important;
+  color:#fff !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.95) !important;
+  overflow:hidden !important;
+}
+#category-panel-list .category-option:nth-child(2)::before{
+  display:block !important;
+  content:"" !important;
+  position:absolute !important;
+  inset:0 !important;
+  background:linear-gradient(180deg,rgba(0,0,0,.02) 20%,rgba(0,0,0,.78) 100%) !important;
+  pointer-events:none !important;
+}
+#category-panel-list .category-option:nth-child(2) span{
+  display:none !important;
+}
+#category-panel-list .category-option:nth-child(2) b,
+#category-panel-list .category-option:nth-child(2) small{
+  position:relative !important;
+  z-index:2 !important;
+  color:#fff !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.95) !important;
+}
+@media(max-width:380px){
+  #category-panel-list .category-option:nth-child(2){
+    height:102px !important;
+    min-height:102px !important;
+  }
+}
+
+
+/* CORREÇÃO RAIZ — imagem de Legumes como IMG real, sem background-image */
+#cats .cat .category-photo{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  object-fit:cover !important;
+  object-position:center !important;
+  margin:0 !important;
+  pointer-events:none !important;
+}
+#cats .cat::before{
+  z-index:1 !important;
+}
+#cats .cat b,#cats .cat small{
+  position:relative !important;
+  z-index:2 !important;
+}
+#category-panel-list .category-option .category-photo{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  object-fit:cover !important;
+  object-position:center !important;
+  margin:0 !important;
+  pointer-events:none !important;
+}
+#category-panel-list .category-option::before{
+  z-index:1 !important;
+}
+#category-panel-list .category-option div{
+  position:relative !important;
+  z-index:2 !important;
+}
+#category-panel-list .category-option:nth-child(2){
+  background-image:none !important;
+  background-color:#173b27 !important;
+  color:#fff !important;
+}
+#category-panel-list .category-option:nth-child(2) span{
+  display:none !important;
+}
+
+/* CORREÇÃO FINAL — containers relativos para a foto real de Legumes */
+#cats .cat{
+  position:relative !important;
+  overflow:hidden !important;
+}
+#cats .cat:nth-child(2){
+  background-image:none !important;
+  background-color:#173b27 !important;
+}
+#cats .cat .category-photo{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  margin:0 !important;
+  pointer-events:none !important;
+  border-radius:inherit !important;
+}
+#cats .cat::before{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:1 !important;
+  pointer-events:none !important;
+}
+#cats .cat span,
+#cats .cat b,
+#cats .cat small{
+  position:relative !important;
+  z-index:2 !important;
+}
+
+#category-panel-list .category-option{
+  position:relative !important;
+  overflow:hidden !important;
+}
+#category-panel-list .category-option:nth-child(2){
+  background-image:none !important;
+  background-color:#173b27 !important;
+}
+#category-panel-list .category-option .category-photo{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  margin:0 !important;
+  pointer-events:none !important;
+  border-radius:inherit !important;
+}
+#category-panel-list .category-option::before{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:1 !important;
+  pointer-events:none !important;
+}
+#category-panel-list .category-option span,
+#category-panel-list .category-option div{
+  position:relative !important;
+  z-index:2 !important;
+}
+
+/* MESMO MÉTODO USADO NA IMAGEM DE FRUTAS — LEGUMES */
+#cats .cat:nth-child(2){
+  background-image:url('./assets/categoria-legumes.jpg?v=3') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(2){
+  background-image:url('./assets/categoria-legumes.jpg?v=3') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+
+
+/* IMAGEM APROVADA — VERDURAS, nos 4 cards principais e no painel Categorias */
+#cats .cat:nth-child(3){
+  background-image:url('./assets/categoria-verduras.jpg?v=1') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  background-color:#173b27 !important;
+}
+#category-panel-list .category-option:nth-child(3){
+  background-image:url('./assets/categoria-verduras.jpg?v=1') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  background-color:#173b27 !important;
+}
+#category-panel-list .category-option:nth-child(3)::before{
+  display:block !important;
+  content:"" !important;
+  position:absolute !important;
+  inset:0 !important;
+  background:linear-gradient(180deg,rgba(0,0,0,.02) 20%,rgba(0,0,0,.78) 100%) !important;
+  pointer-events:none !important;
+}
+#category-panel-list .category-option:nth-child(3) span{display:none !important}
+#category-panel-list .category-option:nth-child(3) b,
+#category-panel-list .category-option:nth-child(3) small{
+  position:relative !important;
+  z-index:2 !important;
+  color:#fff !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.95) !important;
+}
+
+
+/* VERDURAS — mesmo padrão comprovado usado em Frutas e Legumes */
+#cats .cat:nth-child(3){
+  background-image:url('./assets/categoria-verduras.jpg?v=2') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(3){
+  background-image:url('./assets/categoria-verduras.jpg?v=2') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(3)::before{display:none !important}
+
+/* VERDURAS TEMPORARIAMENTE COM A MESMA FOTO DE FRUTAS */
+#cats .cat:nth-child(3){
+  background-image:url('./assets/categoria-frutas.jpg?v=1') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(3){
+  background-image:url('./assets/categoria-frutas.jpg?v=1') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(3)::before{display:none !important}
+
+/* NOVA FOTO DE VERDURAS — mesmo formato das categorias principais */
+#cats .cat:nth-child(3){
+  background-image:url('./assets/categoria-verduras.jpg?v=3') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(3){
+  background-image:url('./assets/categoria-verduras.jpg?v=3') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(3)::before{display:none !important}
+
+/* OVOS, AGUA DE COCO E MEL — nova foto */
+#cats .cat:nth-child(4){
+  background-image:url('./assets/categoria-agua-ovos-mel.jpg?v=3') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(4){
+  background-image:url('./assets/categoria-agua-ovos-mel.jpg?v=3') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+#category-panel-list .category-option:nth-child(4)::before{display:none !important}
+
+
+/* PAINEL CATEGORIAS — somente o nome, sem emoji/contador, sempre branco */
+#category-panel-list .category-option div{
+  position:relative !important;
+  z-index:2 !important;
+}
+#category-panel-list .category-option b{
+  color:#fff !important;
+  font-size:15px !important;
+  font-weight:900 !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.9) !important;
+}
+
+
+/* BUSCA FLUTUANTE — acessível durante a rolagem */
+.floating-search{
+  position:fixed;
+  left:16px;
+  bottom:88px;
+  z-index:70;
+  width:50px;
+  height:50px;
+  border:0;
+  border-radius:50%;
+  background:var(--green);
+  color:#fff;
+  font-size:27px;
+  font-weight:900;
+  box-shadow:0 8px 24px rgba(0,0,0,.22);
+  cursor:pointer;
+}
+.floating-search-box{
+  position:fixed;
+  left:14px;
+  right:14px;
+  bottom:82px;
+  z-index:71;
+  display:none;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border:1px solid #dce5df;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,.20);
+}
+.floating-search-box.show{display:flex}
+.floating-search-box>span{font-size:23px;color:#68776f}
+.floating-search-box input{
+  flex:1;
+  min-width:0;
+  border:0;
+  outline:0;
+  font-size:16px;
+  padding:8px 2px;
+  background:transparent;
+  color:#17211b;
+}
+.floating-search-box button{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  border:0;
+  border-radius:50%;
+  background:#eef3ef;
+  color:#536158;
+  font-size:22px;
+}
+@media(max-width:520px){
+  .floating-search{bottom:82px}
+  .floating-search-box{bottom:76px}
+}
+
+/* UNIDADES — botões maiores para toque no celular */
+.units{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:8px !important;
+  width:100% !important;
+}
+.units .unit{
+  min-height:44px !important;
+  min-width:72px !important;
+  padding:0 14px !important;
+  border-width:2px !important;
+  border-radius:11px !important;
+  font-size:14px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+}
+
+/* UNIDADES — tamanho um pouco menor */
+.units .unit{min-height:35px !important;min-width:56px !important;padding:0 9px !important;font-size:11.5px !important;border-radius:8px !important}.units{gap:5px !important}
+
+/* SACOLA — nome e quantidade um pouco maiores */
+.itemtitle b{font-size:16px !important}.itemqty{font-size:15px !important;font-weight:900 !important}
+
+/* BANNER PRINCIPAL — imagem enviada pelo Samuel */
+.hero{
+  min-height:0 !important;
+  aspect-ratio:16/9;
+  padding:0 !important;
+  background-image:url('./assets/hero-samuel-frutas.webp?v=1') !important;
+  background-size:cover !important;
+  background-position:center !important;
+  border-radius:28px !important;
+}
+.hero>div:first-child,.hero-orb{display:none !important}
+
+/* BANNER — imagem nativa para evitar suavização do background */
+.hero{min-height:0 !important;aspect-ratio:auto !important;padding:0 !important;overflow:hidden !important;background:none !important;border-radius:28px !important}
+.hero-image{display:block !important;width:100% !important;height:auto !important;max-width:1200px !important;margin:0 auto !important;object-fit:contain !important;image-rendering:auto !important}
+.hero>div:first-child,.hero-orb{display:none !important}
+
+/* CORREÇÃO DE NITIDEZ: a imagem disponível tem 600 px de largura; não ampliar além do tamanho nativo */
+.hero-image{display:block !important;width:100% !important;height:auto !important;max-width:600px !important;margin:0 auto !important;object-fit:contain !important;image-rendering:auto !important}

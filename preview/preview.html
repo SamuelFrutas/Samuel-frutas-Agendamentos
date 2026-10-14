@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b6b3a">
 <title>Samuel Frutas — Prévia</title>
-<link rel="stylesheet" href="https://samuelfrutas.github.io/samuel-frutas/preview/preview.css?v=75">
-<link rel="stylesheet" href="https://samuelfrutas.github.io/samuel-frutas/preview/checkout-fonts.css?v=1">
+<link rel="stylesheet" href="./preview.css?v=75">
+<link rel="stylesheet" href="./checkout-fonts.css?v=1">
 </head>
 <body>
 <header class="top">
@@ -15,7 +15,7 @@
 </header>
 <main>
 <section id="catalog" class="view on">
-  <div class="hero"><img class="hero-image" src="https://samuelfrutas.github.io/samuel-frutas/preview/assets/hero-samuel-frutas.jpg?v=3" alt="Samuel Frutas — Pedido online" width="1200" height="675" decoding="sync" fetchpriority="high"></div>
+  <div class="hero"><img class="hero-image" src="./assets/hero-samuel-frutas.jpg?v=3" alt="Samuel Frutas — Pedido online" width="1200" height="675" decoding="sync" fetchpriority="high"></div>
   <label class="search">⌕<input id="search" type="search" placeholder="Buscar frutas, legumes, verduras..." autocomplete="off"></label>
   <div id="load-status" class="load-status">Carregando produtos…</div>
   <div id="cats" class="cats"></div>
@@ -35,12 +35,27 @@
 </section>
 </main>
 <button id="floating-search" class="floating-search" type="button" aria-label="Buscar produto">⌕</button>
-<div id="floating-search-box" class="floating-search-box" aria-hidden="true"><span>⌕</span><input id="floating-search-input" type="search" placeholder="O que você procura?" autocomplete="off"><button id="close-floating-search" type="button" aria-label="Fechar busca">×</button></div>
-<button id="floating-checkout" class="floating-checkout" type="button" aria-label="Finalizar pedido"><span class="floating-cart">🛒<i id="floatcount">0</i></span><span><b>Finalizar pedido</b><small>Ir para a sacola</small></span><strong>→</strong></button>
+<div id="floating-search-box" class="floating-search-box" aria-hidden="true">
+  <span>⌕</span><input id="floating-search-input" type="search" placeholder="O que você procura?" autocomplete="off"><button id="close-floating-search" type="button" aria-label="Fechar busca">×</button>
+</div>
+<button id="floating-checkout" class="floating-checkout" type="button" aria-label="Finalizar pedido">
+  <span class="floating-cart">🛒<i id="floatcount">0</i></span>
+  <span><b>Finalizar pedido</b><small>Ir para a sacola</small></span>
+  <strong>→</strong>
+</button>
 <nav class="bottom"><button id="nav-home" type="button">⌂<span>Início</span></button><button id="nav-cats" type="button">▦<span>Categorias</span></button><button id="nav-bag" type="button">🛒<span>Sacola <em id="navcount">0</em></span></button><button id="nav-more" type="button">☰<span>Mais</span></button></nav>
 <div id="modal" class="modal"><div class="shade"></div><div class="modalbox"><button id="close" type="button">×</button><small>ALTERAR ITEM</small><h3 id="mname"></h3><label>Unidade<select id="munit"></select></label><div class="mqty"><button id="mminus" type="button">−</button><input id="mqty" type="number" min="0"><button id="mplus" type="button">+</button></div><button id="msave" class="send" type="button">Salvar alteração</button></div></div>
-<div id="category-sheet" class="category-sheet" aria-hidden="true"><div class="category-shade"></div><div class="category-panel"><div class="category-panel-head"><div><small>CATEGORIAS</small><h3>O que você procura?</h3></div><button id="close-categories" type="button" aria-label="Fechar categorias">×</button></div><div id="category-panel-list" class="category-panel-list"></div></div></div>
+<div id="category-sheet" class="category-sheet" aria-hidden="true">
+  <div class="category-shade"></div>
+  <div class="category-panel">
+    <div class="category-panel-head">
+      <div><small>CATEGORIAS</small><h3>O que você procura?</h3></div>
+      <button id="close-categories" type="button" aria-label="Fechar categorias">×</button>
+    </div>
+    <div id="category-panel-list" class="category-panel-list"></div>
+  </div>
+</div>
 <div id="toast"></div>
-<script type="module" src="https://samuelfrutas.github.io/samuel-frutas/preview/preview.js?v=39"></script>
+<script type="module" src="./preview.js?v=39"></script>
 </body>
 </html>
