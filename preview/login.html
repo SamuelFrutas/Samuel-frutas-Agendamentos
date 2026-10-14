@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08110c">
+<title>Login • Samuel Frutas</title>
+<style>
+:root{--bg:#08110c;--surface:#101b14;--line:rgba(255,255,255,.09);--text:#f5faf6;--muted:#9eafa3;--green:#38c172;--red:#ff6474}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top right,#173a25,transparent 42%),var(--bg)}
+.card{width:min(100%,390px);background:linear-gradient(180deg,#15231a,#0d1811);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 22px 70px rgba(0,0,0,.35)}
+.logo{width:58px;height:58px;border-radius:17px;display:grid;place-items:center;background:linear-gradient(135deg,var(--green),#1e8f50);font-size:29px;margin-bottom:18px}
+.eyebrow{color:var(--green);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.12em}.card h1{font-size:27px;margin:6px 0}.card p{color:var(--muted);font-size:12px;line-height:1.5;margin:0 0 22px}
+.field{margin-top:13px}.field label{display:block;font-size:11px;font-weight:800;margin-bottom:7px}.field input{width:100%;height:48px;border:1px solid var(--line);background:#0c1710;color:var(--text);border-radius:12px;padding:0 13px;outline:0;font-size:16px}.field input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(56,193,114,.08)}
+button{width:100%;height:48px;margin-top:17px;border:0;border-radius:12px;background:var(--green);color:#06200f;font-weight:900;cursor:pointer}.error{display:none;margin-top:12px;padding:10px;border-radius:10px;background:rgba(255,100,116,.1);color:#ff9aa6;font-size:11px;line-height:1.4}.back{display:block;text-align:center;margin-top:16px;color:var(--muted);font-size:11px;text-decoration:none}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="logo">🍎</div>
+  <div class="eyebrow">Área administrativa</div>
+  <h1>Entrar no painel</h1>
+  <p>Acesse o cadastro e a edição dos produtos da Samuel Frutas.</p>
+  <form id="login-form">
+    <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="username" required></div>
+    <div class="field"><label for="password">Senha</label><input id="password" type="password" autocomplete="current-password" required></div>
+    <button id="login-button" type="submit">Entrar no painel</button>
+    <div id="error-message" class="error"></div>
+  </form>
+  <a class="back" href="preview.html">← Voltar para a loja</a>
+</main>
+<script type="module" src="./login.js"></script>
+</body>
+</html>
