@@ -24,23 +24,23 @@ jobs:
       - name: Baixar repositório
         uses: actions/checkout@v4
 
-      - name: Preparar WhatsApp central somente no build
-        shell: python
+      - name: Aplicar WhatsApp central somente no arquivo publicado
+        shell: bash
         run: |
+          python3 - <<'PY'
           from pathlib import Path
+
           path = Path("preview/preview.js")
           text = path.read_text(encoding="utf-8")
-          old = '''  let whatsappNumber = DEFAULT_WHATSAPP_NUMBER;
-  try {
-    const snap = await getDoc(doc(db, PRODUCTS_COLLECTION, WHATSAPP_CONFIG_ID));
-    let configured = String(snap.data()?.responsibleNumber || "").replace(/\\D/g, "");
-    if (configured.length === 10 || configured.length === 11) configured = "55" + configured;
-    if (configured.length >= 12) whatsappNumber = configured;
-  } catch (error) {
-    console.warn("Não foi possível ler o WhatsApp configurado; usando o número padrão.", error);
-  }
-'''
-          new = '''  let whatsappNumber;
+          start_marker = '  let whatsappNumber = DEFAULT_WHATSAPP_NUMBER;'
+          end_marker = '  window.location.href = "https://wa.me/"'
+          start = text.find(start_marker)
+          end = text.find(end_marker, start)
+
+          if start < 0 or end < 0:
+              raise SystemExit("Bloco de envio do WhatsApp não encontrado; publicação cancelada.")
+
+          replacement = '''  let whatsappNumber;
   try {
     const { getCentralResponsibleNumber } = await import("./central-whatsapp.js");
     whatsappNumber = await getCentralResponsibleNumber();
@@ -48,11 +48,12 @@ jobs:
     console.error("Não foi possível obter o WhatsApp responsável no Bot:", error);
     return toast("Não foi possível obter o WhatsApp responsável. Tente novamente.");
   }
+
 '''
-          if old not in text:
-              raise SystemExit("Bloco original do WhatsApp não encontrado; publicação cancelada.")
-          path.write_text(text.replace(old, new, 1), encoding="utf-8")
-          print("OK: o build publicará o envio usando config/bot/responsibleNumber.")
+
+          path.write_text(text[:start] + replacement + text[end:], encoding="utf-8")
+          print("OK: publicação preparada para usar config/bot/responsibleNumber.")
+          PY
 
       - name: Configurar Pages
         uses: actions/configure-pages@v5
