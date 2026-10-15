@@ -23,43 +23,6 @@ jobs:
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v4
-      - name: Aplicar leitura central do WhatsApp no build
-        shell: python
-        run: |
-          from pathlib import Path
-
-          path = Path("preview/preview.js")
-          text = path.read_text(encoding="utf-8")
-
-          old = '''  let whatsappNumber = DEFAULT_WHATSAPP_NUMBER;
-  try {
-    const snap = await getDoc(doc(db, PRODUCTS_COLLECTION, WHATSAPP_CONFIG_ID));
-    let configured = String(snap.data()?.responsibleNumber || "").replace(/\\D/g, "");
-    if (configured.length === 10 || configured.length === 11) configured = "55" + configured;
-    if (configured.length >= 12) whatsappNumber = configured;
-  } catch (error) {
-    console.warn("Não foi possível ler o WhatsApp configurado; usando o número padrão.", error);
-  }
-'''
-
-          new = '''  let whatsappNumber;
-  try {
-    const { getCentralResponsibleNumber } = await import("./central-whatsapp.js");
-    whatsappNumber = await getCentralResponsibleNumber();
-  } catch (error) {
-    console.error("Não foi possível obter o WhatsApp responsável no Bot:", error);
-    return toast("Não foi possível obter o WhatsApp responsável. Tente novamente.");
-  }
-'''
-
-          if new in text:
-              print("Leitura central já aplicada.")
-          elif old in text:
-              path.write_text(text.replace(old, new, 1), encoding="utf-8")
-              print("Leitura central aplicada apenas no artefato publicado.")
-          else:
-              raise SystemExit("Bloco original do WhatsApp não encontrado.")
-
       - name: Configurar Pages
         uses: actions/configure-pages@v5
         with:
