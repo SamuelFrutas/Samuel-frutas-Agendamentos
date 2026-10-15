@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v4
-      - name: Aplicar leitura central do WhatsApp
+      - name: Aplicar leitura central do WhatsApp no build
         shell: python
         run: |
           from pathlib import Path
@@ -56,22 +56,9 @@ jobs:
               print("Leitura central já aplicada.")
           elif old in text:
               path.write_text(text.replace(old, new, 1), encoding="utf-8")
-              print("Leitura central aplicada.")
+              print("Leitura central aplicada apenas no artefato publicado.")
           else:
               raise SystemExit("Bloco original do WhatsApp não encontrado.")
-
-      - name: Salvar correção no repositório
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add preview/preview.js
-          if git diff --cached --quiet; then
-            echo "Código já está corrigido."
-          else
-            git commit -m "Agendamentos: usar WhatsApp central somente no envio"
-            git push
-          fi
 
       - name: Configurar Pages
         uses: actions/configure-pages@v5
