@@ -14,3 +14,5 @@ export async function getCentralResponsibleNumber() {
 
   return number;
 }
+
+// Disparo controlado para aplicar a correção no envio do pedido.
