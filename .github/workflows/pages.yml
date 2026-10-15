@@ -23,38 +23,6 @@ jobs:
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v4
-
-      - name: Aplicar WhatsApp central somente no arquivo publicado
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          path = Path("preview/preview.js")
-          text = path.read_text(encoding="utf-8")
-          start_marker = '  let whatsappNumber = DEFAULT_WHATSAPP_NUMBER;'
-          end_marker = '  window.location.href = "https://wa.me/"'
-          start = text.find(start_marker)
-          end = text.find(end_marker, start)
-
-          if start < 0 or end < 0:
-              raise SystemExit("Bloco de envio do WhatsApp não encontrado; publicação cancelada.")
-
-          replacement = '''  let whatsappNumber;
-  try {
-    const { getCentralResponsibleNumber } = await import("./central-whatsapp.js");
-    whatsappNumber = await getCentralResponsibleNumber();
-  } catch (error) {
-    console.error("Não foi possível obter o WhatsApp responsável no Bot:", error);
-    return toast("Não foi possível obter o WhatsApp responsável. Tente novamente.");
-  }
-
-'''
-
-          path.write_text(text[:start] + replacement + text[end:], encoding="utf-8")
-          print("OK: publicação preparada para usar config/bot/responsibleNumber.")
-          PY
-
       - name: Configurar Pages
         uses: actions/configure-pages@v5
         with:
