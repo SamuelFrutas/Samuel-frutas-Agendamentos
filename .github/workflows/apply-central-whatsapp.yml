@@ -1,0 +1,66 @@
+name: Apply central WhatsApp safely
+
+on:
+  push:
+    paths:
+      - .github/workflows/apply-central-whatsapp.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch only the WhatsApp lookup
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("preview/preview.js")
+          text = path.read_text(encoding="utf-8")
+
+          old = '''  let whatsappNumber = DEFAULT_WHATSAPP_NUMBER;
+  try {
+    const snap = await getDoc(doc(db, PRODUCTS_COLLECTION, WHATSAPP_CONFIG_ID));
+    let configured = String(snap.data()?.responsibleNumber || "").replace(/\\D/g, "");
+    if (configured.length === 10 || configured.length === 11) configured = "55" + configured;
+    if (configured.length >= 12) whatsappNumber = configured;
+  } catch (error) {
+    console.warn("Não foi possível ler o WhatsApp configurado; usando o número padrão.", error);
+  }
+'''
+
+          new = '''  let whatsappNumber;
+  try {
+    const { getCentralResponsibleNumber } = await import("./central-whatsapp.js");
+    whatsappNumber = await getCentralResponsibleNumber();
+  } catch (error) {
+    console.error("Não foi possível obter o WhatsApp responsável no Bot:", error);
+    return toast("Não foi possível obter o WhatsApp responsável. Tente novamente.");
+  }
+'''
+
+          if new in text:
+              print("Patch já aplicado; apenas removendo o workflow temporário.")
+          elif old in text:
+              text = text.replace(old, new, 1)
+              path.write_text(text, encoding="utf-8")
+              print("Patch aplicado somente no envio do pedido.")
+          else:
+              raise SystemExit("Bloco original do WhatsApp não encontrado; nenhuma alteração feita.")
+
+      - name: Commit and remove temporary workflow
+        shell: bash
+        run: |
+          rm -f .github/workflows/apply-central-whatsapp.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/preview.js preview/central-whatsapp.js .github/workflows/apply-central-whatsapp.yml
+          if git diff --cached --quiet; then
+            echo "Nada para commit."
+            exit 0
+          fi
+          git commit -m "Agendamentos: usar WhatsApp central somente no envio"
+          git push
