@@ -1,7 +1,7 @@
 import { db } from "../firebase.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const WHATSAPP_NUMBER = "5521972837869";
+const DEFAULT_WHATSAPP_NUMBER = "5521972837869";
 const PRODUCTS_COLLECTION = "produtos";
 const ADDRESS_STORAGE_KEY = "samuel_frutas_endereco_entrega";
 
@@ -86,7 +86,7 @@ function parseUnits(data) {
     });
   }
 
-  return [...new Set(units.length ? units : ["UN"])];
+  return [...new Set(units.length ? units : ["UN"])]
 }
 
 function getImage(data) {
@@ -497,7 +497,7 @@ function onlyNumbersInput(input) {
   });
 }
 
-function sendOrder() {
+async function sendOrder() {
   const items = Object.values(cart);
   const date = $("date").value;
   const building = $("building").value.trim();
@@ -534,7 +534,17 @@ function sendOrder() {
   const general = $("general").value.trim();
   if (general) message += "📝 *Observação geral:* " + general + "\n";
 
-  window.location.href = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
+  let whatsappNumber = DEFAULT_WHATSAPP_NUMBER;
+  try {
+    const snap = await getDoc(doc(db, "config", "bot"));
+    let configured = String(snap.data()?.responsibleNumber || "").replace(/\D/g, "");
+    if (configured.length === 10 || configured.length === 11) configured = "55" + configured;
+    if (configured.length >= 12) whatsappNumber = configured;
+  } catch (error) {
+    console.warn("Não foi possível ler o WhatsApp configurado; usando o número padrão.", error);
+  }
+
+  window.location.href = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
 }
 
 window.sendOrder = sendOrder;
