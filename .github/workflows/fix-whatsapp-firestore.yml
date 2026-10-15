@@ -1,0 +1,45 @@
+name: Corrigir WhatsApp Firestore
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.event.head_commit.message != 'Restaurar preview e centralizar WhatsApp no Firestore'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restaurar preview e aplicar correção
+        shell: bash
+        run: |
+          git checkout 4a756d9ec61f6b0d70af5b60f6162782c19ae5b5 -- preview/preview.js
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('preview/preview.js')
+          s=p.read_text()
+          s=s.replace('const PRODUCTS_COLLECTION = "produtos";','const PRODUCTS_COLLECTION = "produtos";\nconst WHATSAPP_CONFIG_ID = "_config";')
+          s=s.replace('snapshot.forEach(docSnap => {\n      const data = docSnap.data();','snapshot.forEach(docSnap => {\n      if (docSnap.id === WHATSAPP_CONFIG_ID) return;\n      const data = docSnap.data();')
+          old='''const snap = await getDoc(doc(db, "config", "bot"));\n    let configured = String(snap.data()?.responsibleNumber || "").replace(/\\D/g, "");'''
+          new='''const snap = await getDoc(doc(db, PRODUCTS_COLLECTION, WHATSAPP_CONFIG_ID));\n    let configured = String(snap.data()?.responsibleNumber || "").replace(/\\D/g, "");'''
+          if old not in s: raise SystemExit('trecho do WhatsApp não encontrado')
+          s=s.replace(old,new)
+          p.write_text(s)
+          PY
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('preview/admin.js')
+          s=p.read_text()
+          old="onSnapshot(collection(db,'produtos'),snap=>{produtos=snap.docs.map(d=>({id:d.id,...d.data()}));render()},err=>{"
+          new="onSnapshot(collection(db,'produtos'),snap=>{produtos=snap.docs.filter(d=>d.id!=='_config').map(d=>({id:d.id,...d.data()}));render()},err=>{"
+          if old not in s: raise SystemExit('snapshot do admin não encontrado')
+          p.write_text(s.replace(old,new))
+          PY
+          rm -f .github/workflows/fix-whatsapp-firestore.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add preview/preview.js preview/admin.js .github/workflows/fix-whatsapp-firestore.yml
+          git commit -m 'Restaurar preview e centralizar WhatsApp no Firestore'
+          git push
