@@ -531,7 +531,7 @@ async function sendOrder() {
   if (block) details.push("Bloco: " + block);
   if (apartment) details.push("Apartamento: " + apartment);
 
-  let message = "🛒 *NOVO PEDIDO - SAMUEL FRUTAS*\\n-----------------------------------\\n\\n";
+  let message = "🛒 *NOVO PEDIDO - SAMUEL FRUTAS*\n-----------------------------------\n\n";
   const categoryOrder = ["aguaOvos", "frutas", "verduras", "legumes"];
   const categoryTitles = {
     aguaOvos: "ÁGUA DE COCO, MEL E OVOS",
@@ -552,15 +552,15 @@ async function sendOrder() {
     const categoryItems = groupedItems[category];
     if (!categoryItems.length) return;
 
-    message += "*" + categoryTitles[category] + "*\\n";
+    message += "*" + categoryTitles[category] + "*\n";
     categoryItems.forEach(item => {
-      message += "• *" + item.name + "*: " + formatQty(item.quantity) + " " + item.unit + "\\n";
-      if (item.obs) message += "  _Obs: " + item.obs + "_\\n";
+      message += "• *" + item.name + "*: " + formatQty(item.quantity) + " " + item.unit + "\n";
+      if (item.obs) message += "  _Obs: " + item.obs + "_\n";
     });
-    message += "\\n";
+    message += "\n";
   });
 
-  message += "-----------------------------------\\n";
+  message += "-----------------------------------\n";
   message += "📅 *Data:* " + date.split("-").reverse().join("/") + "\n";
   message += "🚚 *Tipo:* " + orderType + "\n";
 
