@@ -75,9 +75,9 @@ function parseUnits(data) {
     bottles.forEach(bottle => {
       const quantity = Number(bottle?.quantidade) || 0;
       const measure = bottle?.unidade === "l" ? "L" : "ML";
-      if (quantity > 0) units.push("GARRAFA " + formatQty(quantity) + " " + measure);
+      if (quantity > 0) units.push("GF " + formatQty(quantity) + " " + measure);
     });
-    if (!bottles.length) units.push("GARRAFA");
+    if (!bottles.length) units.push("GF");
   }
   if (hasForm("bdj", "bdj", "bandeja")) units.push("BDJ");
   if (hasForm("umQuarto", "1/4", "¼", "um quarto")) units.push("1/4");
