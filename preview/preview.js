@@ -70,6 +70,15 @@ function parseUnits(data) {
     const quantity = parseInt(u.quantidadePorLote || data?.quantidadeLote || 3, 10);
     units.push(quantity > 0 ? "LOTE C/" + quantity : "LOTE");
   }
+  if (u.garrafa === true) {
+    const bottles = Array.isArray(u.garrafas) ? u.garrafas : [];
+    bottles.forEach(bottle => {
+      const quantity = Number(bottle?.quantidade) || 0;
+      const measure = bottle?.unidade === "l" ? "L" : "ML";
+      if (quantity > 0) units.push("GARRAFA " + formatQty(quantity) + " " + measure);
+    });
+    if (!bottles.length) units.push("GARRAFA");
+  }
   if (hasForm("bdj", "bdj", "bandeja")) units.push("BDJ");
   if (hasForm("umQuarto", "1/4", "¼", "um quarto")) units.push("1/4");
   if (hasForm("umOitavo", "1/8", "⅛", "um oitavo")) units.push("1/8");
