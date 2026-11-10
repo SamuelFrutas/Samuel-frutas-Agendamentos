@@ -53,10 +53,10 @@ async function sendOrderThroughCentralWhatsApp() {
   let message = "🛒 *NOVO PEDIDO - SAMUEL FRUTAS*\n-----------------------------------\n\n";
   const categoryOrder = ["aguaOvos", "frutas", "verduras", "legumes"];
   const categoryTitles = {
-    aguaOvos: "ÁGUA DE COCO, MEL E OVOS",
-    frutas: "FRUTAS",
-    verduras: "VERDURAS",
-    legumes: "LEGUMES"
+    aguaOvos: "🥥 ÁGUA DE COCO, MEL E OVOS",
+    frutas: "🍎 FRUTAS",
+    verduras: "🥬 VERDURAS",
+    legumes: "🥕 LEGUMES"
   };
   const groupedItems = { aguaOvos: [], frutas: [], verduras: [], legumes: [] };
 
