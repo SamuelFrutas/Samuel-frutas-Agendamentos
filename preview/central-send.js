@@ -51,12 +51,35 @@ async function sendOrderThroughCentralWhatsApp() {
   });
 
   let message = "🛒 *NOVO PEDIDO - SAMUEL FRUTAS*\n-----------------------------------\n\n";
-  items.forEach(item => {
-    message += "• *" + item.name + "*: " + formatQty(item.quantity) + " " + item.unit + "\n";
-    if (item.obs) message += "  _Obs: " + item.obs + "_\n";
+  const categoryOrder = ["aguaOvos", "frutas", "verduras", "legumes"];
+  const categoryTitles = {
+    aguaOvos: "ÁGUA DE COCO, MEL E OVOS",
+    frutas: "FRUTAS",
+    verduras: "VERDURAS",
+    legumes: "LEGUMES"
+  };
+  const groupedItems = { aguaOvos: [], frutas: [], verduras: [], legumes: [] };
+
+  itemElements.forEach((element, index) => {
+    const category = categoryOrder.includes(element.dataset.category)
+      ? element.dataset.category
+      : "frutas";
+    groupedItems[category].push(items[index]);
   });
 
-  message += "\n-----------------------------------\n";
+  categoryOrder.forEach(category => {
+    const categoryItems = groupedItems[category];
+    if (!categoryItems.length) return;
+
+    message += "*" + categoryTitles[category] + "*\n";
+    categoryItems.forEach(item => {
+      message += "• *" + item.name + "*: " + formatQty(item.quantity) + " " + item.unit + "\n";
+      if (item.obs) message += "  _Obs: " + item.obs + "_\n";
+    });
+    message += "\n";
+  });
+
+  message += "-----------------------------------\n";
   message += "📅 *Data:* " + date.split("-").reverse().join("/") + "\n";
   message += "🚚 *Tipo:* " + (delivery ? "Entrega" : "Retirada") + "\n";
   if (delivery) {
