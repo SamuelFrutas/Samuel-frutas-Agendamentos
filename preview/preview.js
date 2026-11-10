@@ -352,7 +352,7 @@ function renderCart() {
   }
 
   $("cartlist").innerHTML = items.map(([key, item]) =>
-    '<article class="item">' +
+    '<article class="item" data-category="' + (Object.keys(products).find(category => products[category].some(product => product.id === item.id)) || "frutas") + '">' +
       '<div class="itemrow"><div class="iteminfo">' +
         '<div class="itemtitle"><b>' + escapeHtml(item.name) + '</b><span class="itemqty" data-edit="' + escapeHtml(key) + '">' +
           formatQty(item.quantity) + " " + escapeHtml(item.unit) + '</span></div>' +
