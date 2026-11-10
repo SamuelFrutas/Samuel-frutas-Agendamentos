@@ -25,7 +25,7 @@ const CATEGORY_META = {
   frutas: ["Frutas", "🍎"],
   legumes: ["Legumes", "🥕"],
   verduras: ["Verduras", "🥬"],
-  aguaOvos: ["Água de coco e ovos", "🥥"]
+  aguaOvos: ["Água de coco, mel e ovos", "🥥"]
 };
 
 function normalizarCategoria(categoria, nome = "") {
@@ -38,7 +38,10 @@ function normalizarCategoria(categoria, nome = "") {
     value.includes("ovo") ||
     name.includes("agua de coco") ||
     (name.includes("coco") && name.includes("agua")) ||
-    name.includes("ovo")
+    name.includes("ovo") ||
+    value.includes("mel") ||
+    name === "mel" ||
+    name.startsWith("mel ")
   ) return "aguaOvos";
 
   if (value.includes("legume")) return "legumes";
@@ -528,13 +531,36 @@ async function sendOrder() {
   if (block) details.push("Bloco: " + block);
   if (apartment) details.push("Apartamento: " + apartment);
 
-  let message = "🛒 *NOVO PEDIDO - SAMUEL FRUTAS*\n-----------------------------------\n\n";
+  let message = "🛒 *NOVO PEDIDO - SAMUEL FRUTAS*\\n-----------------------------------\\n\\n";
+  const categoryOrder = ["aguaOvos", "frutas", "verduras", "legumes"];
+  const categoryTitles = {
+    aguaOvos: "ÁGUA DE COCO, MEL E OVOS",
+    frutas: "FRUTAS",
+    verduras: "VERDURAS",
+    legumes: "LEGUMES"
+  };
+  const groupedItems = { aguaOvos: [], frutas: [], verduras: [], legumes: [] };
+
   items.forEach(item => {
-    message += "• *" + item.name + "*: " + formatQty(item.quantity) + " " + item.unit + "\n";
-    if (item.obs) message += "  _Obs: " + item.obs + "_\n";
+    const category = categoryOrder.find(key =>
+      products[key].some(product => product.id === item.id)
+    ) || "frutas";
+    groupedItems[category].push(item);
   });
 
-  message += "\n-----------------------------------\n";
+  categoryOrder.forEach(category => {
+    const categoryItems = groupedItems[category];
+    if (!categoryItems.length) return;
+
+    message += "*" + categoryTitles[category] + "*\\n";
+    categoryItems.forEach(item => {
+      message += "• *" + item.name + "*: " + formatQty(item.quantity) + " " + item.unit + "\\n";
+      if (item.obs) message += "  _Obs: " + item.obs + "_\\n";
+    });
+    message += "\\n";
+  });
+
+  message += "-----------------------------------\\n";
   message += "📅 *Data:* " + date.split("-").reverse().join("/") + "\n";
   message += "🚚 *Tipo:* " + orderType + "\n";
 
