@@ -93,7 +93,13 @@ async function sendOrderThroughCentralWhatsApp() {
 
   try {
     const whatsappNumber = await getCentralResponsibleNumber();
-    window.location.href = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+    // Normaliza o texto e valida a codificação UTF-8 antes de abrir o WhatsApp.
+    const normalizedMessage = message.normalize("NFC");
+    const encodedMessage = encodeURIComponent(normalizedMessage);
+    if (decodeURIComponent(encodedMessage) !== normalizedMessage) {
+      throw new Error("Falha ao validar a codificação da mensagem.");
+    }
+    window.location.href = "https://wa.me/" + whatsappNumber + "?text=" + encodedMessage;
   } catch (error) {
     console.error("Samuel Frutas - WhatsApp central:", error);
     toast("Não foi possível obter o WhatsApp responsável no Bot. Tente novamente.");
