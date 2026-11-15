@@ -511,80 +511,9 @@ function onlyNumbersInput(input) {
   });
 }
 
-async function sendOrder() {
-  const items = Object.values(cart);
-  const date = $("date").value;
-  const building = $("building").value.trim();
-  const block = $("block").value.trim();
-  const apartment = $("apartment").value.trim();
+// O envio do pedido é centralizado em central-send.js.
 
-  if (!items.length) return toast("Sua sacola está vazia.");
-  if (!date) return toast("Escolha a data.");
-  if (orderType === "Entrega") {
-    if (!building) return toast("Informe o número do prédio.");
-    if (!apartment) return toast("Informe o número do apartamento.");
-    saveAddressData();
-  }
 
-  const details = [];
-  if (building) details.push("Prédio: " + building);
-  if (block) details.push("Bloco: " + block);
-  if (apartment) details.push("Apartamento: " + apartment);
-
-  let message = "🛒 *NOVO PEDIDO - SAMUEL FRUTAS*\n-----------------------------------\n\n";
-  const categoryOrder = ["aguaOvos", "frutas", "verduras", "legumes"];
-  const categoryTitles = {
-    aguaOvos: "ÁGUA DE COCO, MEL E OVOS",
-    frutas: "FRUTAS",
-    verduras: "VERDURAS",
-    legumes: "LEGUMES"
-  };
-  const groupedItems = { aguaOvos: [], frutas: [], verduras: [], legumes: [] };
-
-  items.forEach(item => {
-    const category = categoryOrder.find(key =>
-      products[key].some(product => product.id === item.id)
-    ) || "frutas";
-    groupedItems[category].push(item);
-  });
-
-  categoryOrder.forEach(category => {
-    const categoryItems = groupedItems[category];
-    if (!categoryItems.length) return;
-
-    message += "*" + categoryTitles[category] + "*\n";
-    categoryItems.forEach(item => {
-      message += "• *" + item.name + "*: " + formatQty(item.quantity) + " " + item.unit + "\n";
-      if (item.obs) message += "  _Obs: " + item.obs + "_\n";
-    });
-    message += "\n";
-  });
-
-  message += "-----------------------------------\n";
-  message += "📅 *Data:* " + date.split("-").reverse().join("/") + "\n";
-  message += "🚚 *Tipo:* " + orderType + "\n";
-
-  if (orderType === "Entrega") {
-    if (details.length) message += "🏢 " + details.join(" | ") + "\n";
-  }
-
-  const general = $("general").value.trim();
-  if (general) message += "📝 *Observação geral:* " + general + "\n";
-
-  let whatsappNumber = DEFAULT_WHATSAPP_NUMBER;
-  try {
-    const snap = await getDoc(doc(db, PRODUCTS_COLLECTION, WHATSAPP_CONFIG_ID));
-    let configured = String(snap.data()?.responsibleNumber || "").replace(/\D/g, "");
-    if (configured.length === 10 || configured.length === 11) configured = "55" + configured;
-    if (configured.length >= 12) whatsappNumber = configured;
-  } catch (error) {
-    console.warn("Não foi possível ler o WhatsApp configurado; usando o número padrão.", error);
-  }
-
-  window.location.href = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
-}
-
-window.sendOrder = sendOrder;
 
 function openFloatingSearch() {
   currentCategory = "";
@@ -620,7 +549,6 @@ function setup() {
 
   $("delivery").onclick = () => setOrderType("Entrega");
   $("pickup").onclick = () => setOrderType("Retirada");
-  $("send").onclick = sendOrder;
 
   $("close").onclick = closeEdit;
   $("modal").querySelector(".shade").onclick = closeEdit;
